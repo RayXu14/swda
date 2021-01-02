@@ -132,33 +132,41 @@ def build_tree(dest_path):
     if os.path.isdir(sets_dir):
         shutil.rmtree(sets_dir)
     os.mkdir(sets_dir)
-    train_dir = os.path.join(sets_dir, 'train')
-    os.mkdir(train_dir)
-    valid_dir = os.path.join(sets_dir, 'valid')
-    os.mkdir(valid_dir)
-    test_dir = os.path.join(sets_dir, 'test')
-    os.mkdir(test_dir)
+    train_dir = os.path.join(sets_dir, 'train', 'sw0')
+    os.makedirs(train_dir)
+    valid_dir = os.path.join(sets_dir, 'valid', 'sw0')
+    os.makedirs(valid_dir)
+    test_dir = os.path.join(sets_dir, 'test', 'sw0')
+    os.makedirs(test_dir)
 
 
 def mv_files(dest_path, data_path):
     """
     Divide files depending on their names
     """
+    train_path = os.path.join(dest_path, 'sets', 'train')
+    valid_path = os.path.join(dest_path, 'sets', 'valid')
+    test_path = os.path.join(dest_path, 'sets', 'test')
+
     for root, directories, files in os.walk(data_path):
         for file in files:
             f_name, f_ext = os.path.splitext(file)
             if f_ext == ".csv":
+                if f_name == 'swda-metadata':
+                    shutil.copyfile(os.path.join(root, file), os.path.join(train_path, file))
+                    shutil.copyfile(os.path.join(root, file), os.path.join(valid_path, file))
+                    shutil.copyfile(os.path.join(root, file), os.path.join(test_path, file))
                 f_name, f_ext = os.path.splitext(f_name)
                 if f_ext == ".utt":
                     chunks = f_name.split('_')
                     fileID = chunks[0] + chunks[2]
                     file_path = os.path.join(root, file)
                     if fileID in TRAIN_SET_IDX:
-                        shutil.copyfile(file_path, os.path.join(dest_path, 'sets', 'train', file))
+                        shutil.copyfile(file_path, os.path.join(train_path, 'sw0', file))
                     elif fileID in VALID_SET_IDX:
-                        shutil.copyfile(file_path, os.path.join(dest_path, 'sets', 'valid', file))
+                        shutil.copyfile(file_path, os.path.join(valid_path, 'sw0', file))
                     elif fileID in TEST_SET_IDX:
-                        shutil.copyfile(file_path, os.path.join(dest_path, 'sets', 'test', file))
+                        shutil.copyfile(file_path, os.path.join(test_path, 'sw0', file))
 
 
 def main(dest_path, data_path):
