@@ -83,7 +83,7 @@ def act_tags_and_rootlabels():
 
 ######################################################################
 
-def act_tags_and_text():
+def act_tags_and_text(swda_dir='swda'):
     """
     Create a CSV file named swda-actags-and-text.csv in
     which each utterance utt has its own row consisting of
@@ -92,9 +92,9 @@ def act_tags_and_text():
 
     This data can be used for training a speechAct classifier
     """
-    csvwriter = csv.writer(open('swda-acttags-and-text.csv', 'wt'))
+    csvwriter = csv.writer(open(swda_dir + '-acttags-and-text.csv', 'wt'))
     csvwriter.writerow(['DamslActTag', 'Text'])
-    corpus = CorpusReader('swda')
+    corpus = CorpusReader(swda_dir)
     for utt in corpus.iter_utterances(display_progress=True):
         clean_words = utt.text_words(filter_disfluency=True)
         csvwriter.writerow([utt.damsl_act_tag(), " ".join(clean_words)])
