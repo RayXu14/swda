@@ -174,7 +174,7 @@ def main(dest_path, data_path):
     mv_files(dest_path, data_path)
 
 
-DEST_PATH = '/home/andres/repositories/swda'
+DEST_PATH = '.'
 DATA_PATH = os.path.join(DEST_PATH, 'swda')
 
 main(DEST_PATH, DATA_PATH)
